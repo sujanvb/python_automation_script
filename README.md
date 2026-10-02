@@ -1,51 +1,83 @@
-# Selenium Python Automation Framework
+# Python Selenium Automation Framework
 
-This repository contains a Selenium-based test automation framework built using Python.  
-The framework is designed to execute UI automation tests and generate HTML reports with screenshots for each test step.
+A Selenium WebDriver test automation framework in Python, built with the **Page Object Model**. It runs an end-to-end UI test against a demo Shopify storefront and produces an **HTML execution report with a screenshot for every step**.
+
+> Personal project, created as a small demo of framework design in Python.
+
+## Test Scenario
+
+`SearchAddToCartTest.py` covers a basic shopping flow:
+
+1. Launch the store and unlock it on the password page
+2. Verify the Home page is loaded
+3. Search for a product (`Snowboards`)
+4. Verify the Search Results page and pick the first **in-stock** product
+5. Verify the Product page shows the same product name
+6. Click **Add to Cart**
+7. Verify the cart contains exactly one item, with the correct name and quantity of 1
 
 ## Features
 
-- Selenium WebDriver based automation
-- Automatic screenshot capture for test steps
-- Timestamp-based report folder creation
-- HTML test execution report
-- Modular framework structure
-- Easy test execution
+- Page Object Model, with a shared `MasterPage` base class
+- Reusable action layer (explicit waits, click, set/clear text, get text/attributes, multi-element text)
+- Driver management through a single `DriverScript` class (Chrome via `webdriver-manager`, incognito, cache disabled)
+- Self-contained HTML reports with a timestamped folder per run
+- Step-level PASS/FAIL logging with a screenshot per step
+- Test case documentation in `TestCaseDoc.xlsx`
+
+## Project Structure
+
+```
+python_automation_script/
+├── SearchAddToCartTest.py        # Test script (entry point)
+├── pageClasses/                  # Page Objects
+│   ├── MasterPage.py             # Base page
+│   ├── LoginPage.py
+│   ├── HomePage.py
+│   ├── ApplicationHeader.py
+│   ├── SearchResultsPage.py
+│   ├── ProductPage.py
+│   └── YourCartSection.py
+├── utilityClasses/
+│   ├── DriverScript.py           # Browser setup / teardown
+│   ├── ReusableActionClass.py    # Wrapped Selenium actions with waits
+│   └── ReportManager.py          # HTML report + screenshots
+├── TestCaseDoc.xlsx              # Test case documentation
+└── requirements.txt
+```
 
 ## Prerequisites
 
-Make sure the following software is installed:
+- Python 3.8+
+- Google Chrome (the matching driver is downloaded automatically by `webdriver-manager`)
 
-- Python 3.x
-- Google Chrome browser
+## Setup
 
-## Installation
-
-Clone the repository:
-
-git clone https://github.com/sujanvb/adnabu-qa-assignment.git
-cd adnabu-qa-assignment
-
-Install required dependencies:
-
+```bash
+git clone https://github.com/sujanvb/python_automation_script.git
+cd python_automation_script
 pip install -r requirements.txt
+```
 
-## Running the Test
+## Run the Test
 
-To execute the automation test, run the following command from the project root directory:
-
+```bash
 python SearchAddToCartTest.py
-
-This will:
-- Launch the browser
-- Execute the test steps
-- Capture screenshots for each step
-- Generate an HTML execution report
+```
 
 ## Reports
 
-After execution, reports will be generated inside the `reports` folder with a timestamp-based directory.
+Each run creates, inside the `reports/` folder:
+
+- `TestReport_<timestamp>.html`: the execution report
+- `screenshots/<timestamp>/step_<n>.png`: one screenshot per logged step
+
+Open the HTML file in any browser to review the results.
+
+## Tech Stack
+
+Python · Selenium WebDriver · webdriver-manager · HTML reporting
 
 ## Author
 
-Sujan V B
+**Sujan V B**
